@@ -125,6 +125,7 @@ int main(){
     Turn turn = Turn::P1;
     int move = 0;
     std::vector<std::vector<int>> game (3,std::vector<int> (3,0));
+    std::vector<bool> valid_no(9,false);
     std::string first_row ="   1   |   2   |   3   \n";
     std::string sec_row   ="   4   |   5   |   6   \n";
     std::string third_row ="   7   |   8   |   9   \n";
@@ -133,29 +134,34 @@ int main(){
         int box_num{};
         std::cout<<"Enter box number : \n";
         std::cin>>box_num;
-        // std::cout<<"\n";
-        if(box_num < 4){
-            frow_append(first_row,box_num, turn);
-        }
-        if(box_num < 7){
-            srow_append(sec_row,box_num, turn);
-        }
-        if(box_num < 10){
-            trow_append(third_row,box_num, turn);
-        }
-        display_board(first_row,sec_row,third_row,state);
-        game_state(game,first_row,sec_row,third_row,state);
-        move++;
-        if(move == 9 && state == State::PLAYING) {
-                state = State::DRAW;
-        }
-        if(turn == Turn::P1){
-            turn = Turn::P2;
+        if(valid_no[box_num-1]){
+            std::cout<<"BOX FILLED\n";
         }else {
-            turn = Turn::P1;
+            valid_no[box_num-1] = true;
+            if(box_num < 4){
+                frow_append(first_row,box_num, turn);
+            }
+            if(box_num < 7){
+                srow_append(sec_row,box_num, turn);
+            }
+            if(box_num < 10){
+                trow_append(third_row,box_num, turn);
+            }
+            display_board(first_row,sec_row,third_row,state);
+            game_state(game,first_row,sec_row,third_row,state);
+            move++;
+            if(move == 9 && state == State::PLAYING) {
+                    state = State::DRAW;
+            }
+            if(turn == Turn::P1){
+                turn = Turn::P2;
+            }else {
+                turn = Turn::P1;
+            }
+
         }
-        // std::cout<<move<<'\n';
     }
     display_board(first_row,sec_row,third_row,state);
+    valid_no.clear();
     return 0;
 }
